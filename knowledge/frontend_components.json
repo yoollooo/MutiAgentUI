@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Container",
+    "description": "页面内容的主容器组件。用于限制页面内容的最大宽度并使其水平居中，包含默认的水平内边距以适应移动端。",
+    "tags": ["layout", "wrapper", "container"],
+    "code": "const Container = ({ children, className = '' }) => (\n  <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>\n    {children}\n  </div>\n);"
+  },
+  {
+    "name": "Navbar",
+    "description": "顶部导航栏组件。包含Logo区域、桌面端链接列表和移动端适配。背景为白色，底部有边框。",
+    "tags": ["navigation", "header", "menu"],
+    "code": "const Navbar = ({ logo, links }) => (\n  <nav className=\"bg-white border-b border-gray-200\">\n    <div className=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">\n      <div className=\"flex justify-between h-16\">\n        <div className=\"flex\">\n          <div className=\"flex-shrink-0 flex items-center font-bold text-xl text-indigo-600\">\n            {logo}\n          </div>\n          <div className=\"hidden sm:ml-6 sm:flex sm:space-x-8\">\n            {links.map((link) => (\n              <a key={link.name} href={link.href} className=\"border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium\">\n                {link.name}\n              </a>\n            ))}\n          </div>\n        </div>\n      </div>\n    </div>\n  </nav>\n);"
+  },
+  {
+    "name": "TwoColumnLayout",
+    "description": "两栏布局组件。通常用于后台管理界面或文档页，左侧为宽25%的侧边栏，右侧为主要内容区域。移动端自动堆叠。",
+    "tags": ["layout", "sidebar", "grid"],
+    "code": "const TwoColumnLayout = ({ sidebar, children }) => (\n  <div className=\"flex flex-col md:flex-row min-h-screen\">\n    <aside className=\"w-full md:w-1/4 bg-gray-50 border-r border-gray-200 p-6\">\n      {sidebar}\n    </aside>\n    <main className=\"w-full md:w-3/4 p-6 bg-white\">\n      {children}\n    </main>\n  </div>\n);"
+  },
+  {
+    "name": "PrimaryButton",
+    "description": "主要操作按钮。蓝色背景，白色文字，圆角设计。带有悬停变色效果和点击时的聚焦环。用于表单提交或主要行动召唤（CTA）。",
+    "tags": ["form", "action", "button"],
+    "code": "const PrimaryButton = ({ children, onClick, type = 'button', disabled = false }) => (\n  <button\n    type={type}\n    onClick={onClick}\n    disabled={disabled}\n    className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}\n  >\n    {children}\n  </button>\n);"
+  },
+  {
+    "name": "SecondaryButton",
+    "description": "次要操作按钮。白色背景，灰色边框，灰色文字。用于取消、返回等非主要操作。",
+    "tags": ["form", "action", "button"],
+    "code": "const SecondaryButton = ({ children, onClick, type = 'button' }) => (\n  <button\n    type={type}\n    onClick={onClick}\n    className=\"inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500\"\n  >\n    {children}\n  </button>\n);"
+  },
+  {
+    "name": "Input",
+    "description": "带标签的文本输入框。包含Label、输入区域和可选的占位符。边框在聚焦时变色。",
+    "tags": ["form", "field", "text"],
+    "code": "const Input = ({ label, id, type = 'text', placeholder, value, onChange }) => (\n  <div className=\"mb-4\">\n    <label htmlFor={id} className=\"block text-sm font-medium text-gray-700 mb-1\">\n      {label}\n    </label>\n    <input\n      type={type}\n      name={id}\n      id={id}\n      className=\"shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border\"\n      placeholder={placeholder}\n      value={value}\n      onChange={onChange}\n    />\n  </div>\n);"
+  },
+  {
+    "name": "Select",
+    "description": "下拉选择框组件。包含Label和选项列表。",
+    "tags": ["form", "field", "dropdown"],
+    "code": "const Select = ({ label, id, options, value, onChange }) => (\n  <div className=\"mb-4\">\n    <label htmlFor={id} className=\"block text-sm font-medium text-gray-700 mb-1\">\n      {label}\n    </label>\n    <select\n      id={id}\n      name={id}\n      className=\"mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border\"\n      value={value}\n      onChange={onChange}\n    >\n      {options.map((opt) => (\n        <option key={opt.value} value={opt.value}>{opt.label}</option>\n      ))}\n    </select>\n  </div>\n);"
+  },
+  {
+    "name": "Card",
+    "description": "通用卡片组件。带有白色背景、轻微阴影和圆角。包含标题区域和内容区域。",
+    "tags": ["display", "box", "wrapper"],
+    "code": "const Card = ({ title, children, className = '' }) => (\n  <div className={`bg-white overflow-hidden shadow rounded-lg ${className}`}>\n    {title && (\n      <div className=\"px-4 py-5 sm:px-6 border-b border-gray-200\">\n        <h3 className=\"text-lg leading-6 font-medium text-gray-900\">{title}</h3>\n      </div>\n    )}\n    <div className=\"px-4 py-5 sm:p-6\">\n      {children}\n    </div>\n  </div>\n);"
+  },
+  {
+    "name": "GridSection",
+    "description": "响应式网格布局组件。在移动端显示为1列，平板端2列，桌面端3列。常用于展示产品列表或功能特性。",
+    "tags": ["layout", "list", "gallery"],
+    "code": "const GridSection = ({ items, renderItem }) => (\n  <div className=\"grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3\">\n    {items.map((item, index) => (\n      <div key={index} className=\"col-span-1\">\n        {renderItem(item)}\n      </div>\n    ))}\n  </div>\n);"
+  },
+  {
+    "name": "Alert",
+    "description": "提示/警告框组件。支持 success (绿色), error (红色), warning (黄色), info (蓝色) 四种状态。",
+    "tags": ["feedback", "notification", "message"],
+    "code": "const Alert = ({ type = 'info', message }) => {\n  const styles = {\n    success: 'bg-green-50 text-green-800',\n    error: 'bg-red-50 text-red-800',\n    warning: 'bg-yellow-50 text-yellow-800',\n    info: 'bg-blue-50 text-blue-800',\n  };\n  return (\n    <div className={`rounded-md p-4 mb-4 ${styles[type]}`}>\n      <div className=\"flex\">\n        <div className=\"ml-3\">\n          <p className=\"text-sm font-medium\">{message}</p>\n        </div>\n      </div>\n    </div>\n  );\n};"
+  },
+  {
+    "name": "Badge",
+    "description": "小标签/徽章组件。用于显示状态（如：已激活、待处理）。圆角胶囊形状，字体较小。",
+    "tags": ["display", "status", "label"],
+    "code": "const Badge = ({ text, color = 'gray' }) => {\n  const colors = {\n    gray: 'bg-gray-100 text-gray-800',\n    green: 'bg-green-100 text-green-800',\n    red: 'bg-red-100 text-red-800',\n    blue: 'bg-blue-100 text-blue-800',\n  };\n  return (\n    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors[color] || colors.gray}`}>\n      {text}\n    </span>\n  );\n};"
+  },
+  {
+    "name": "Modal",
+    "description": "模态框/对话框组件。包含半透明黑色遮罩层和居中的白色内容框。包含标题和关闭按钮。",
+    "tags": ["overlay", "dialog", "popup"],
+    "code": "const Modal = ({ isOpen, onClose, title, children }) => {\n  if (!isOpen) return null;\n  return (\n    <div className=\"fixed z-10 inset-0 overflow-y-auto\" aria-labelledby=\"modal-title\" role=\"dialog\" aria-modal=\"true\">\n      <div className=\"flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0\">\n        <div className=\"fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity\" aria-hidden=\"true\" onClick={onClose}></div>\n        <span className=\"hidden sm:inline-block sm:align-middle sm:h-screen\" aria-hidden=\"true\">&#8203;</span>\n        <div className=\"inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full\">\n          <div className=\"bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4\">\n            <h3 className=\"text-lg leading-6 font-medium text-gray-900\" id=\"modal-title\">{title}</h3>\n            <div className=\"mt-2\">{children}</div>\n          </div>\n          <div className=\"bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse\">\n            <button type=\"button\" onClick={onClose} className=\"mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n};"
+  },
+  {
+    "name": "DataTable",
+    "description": "基础数据表格。包含表头和斑马纹（隔行变色）的表体。",
+    "tags": ["display", "table", "list"],
+    "code": "const DataTable = ({ columns, data }) => (\n  <div className=\"flex flex-col\">\n    <div className=\"-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8\">\n      <div className=\"py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8\">\n        <div className=\"shadow overflow-hidden border-b border-gray-200 sm:rounded-lg\">\n          <table className=\"min-w-full divide-y divide-gray-200\">\n            <thead className=\"bg-gray-50\">\n              <tr>\n                {columns.map((col) => (\n                  <th key={col.key} scope=\"col\" className=\"px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider\">\n                    {col.title}\n                  </th>\n                ))}\n              </tr>\n            </thead>\n            <tbody className=\"bg-white divide-y divide-gray-200\">\n              {data.map((row, idx) => (\n                <tr key={idx} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>\n                  {columns.map((col) => (\n                    <td key={col.key} className=\"px-6 py-4 whitespace-nowrap text-sm text-gray-500\">\n                      {row[col.key]}\n                    </td>\n                  ))}\n                </tr>\n              ))}\n            </tbody>\n          </table>\n        </div>\n      </div>\n    </div>\n  </div>\n);"
+  },
+  {
+    "name": "Breadcrumb",
+    "description": "面包屑导航。显示当前页面的路径，层级之间用斜杠分隔。",
+    "tags": ["navigation", "path"],
+    "code": "const Breadcrumb = ({ items }) => (\n  <nav className=\"flex\" aria-label=\"Breadcrumb\">\n    <ol className=\"flex items-center space-x-4\">\n      {items.map((item, index) => (\n        <li key={index}>\n          <div className=\"flex items-center\">\n            {index > 0 && (\n              <svg className=\"flex-shrink-0 h-5 w-5 text-gray-300\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" viewBox=\"0 0 20 20\" aria-hidden=\"true\">\n                <path d=\"M5.555 17.776l8-16 .894.448-8 16-.894-.448z\" />\n              </svg>\n            )}\n            <a href={item.href} className={`text-sm font-medium ${index > 0 ? 'ml-4' : ''} ${index === items.length - 1 ? 'text-gray-500 pointer-events-none' : 'text-gray-500 hover:text-gray-700'}`}>\n              {item.name}\n            </a>\n          </div>\n        </li>\n      ))}\n    </ol>\n  </nav>\n);"
+  },
+  {
+    "name": "Spinner",
+    "description": "加载中状态指示器。一个旋转的圆形SVG图标。",
+    "tags": ["feedback", "loading", "status"],
+    "code": "const Spinner = () => (\n  <div className=\"flex justify-center items-center\">\n    <svg className=\"animate-spin -ml-1 mr-3 h-5 w-5 text-indigo-500\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\">\n      <circle className=\"opacity-25\" cx=\"12\" cy=\"12\" r=\"10\" stroke=\"currentColor\" strokeWidth=\"4\"></circle>\n      <path className=\"opacity-75\" fill=\"currentColor\" d=\"M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z\"></path>\n    </svg>\n  </div>\n);"
+  },
+  {
+    "name": "Footer",
+    "description": "页面底部组件。包含版权信息和简单的链接列表。背景为白色。",
+    "tags": ["layout", "footer", "copyright"],
+    "code": "const Footer = () => (\n  <footer className=\"bg-white border-t border-gray-200\">\n    <div className=\"max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8\">\n      <div className=\"flex justify-center space-x-6 md:order-2\">\n        <a href=\"#\" className=\"text-gray-400 hover:text-gray-500\">Privacy</a>\n        <a href=\"#\" className=\"text-gray-400 hover:text-gray-500\">Terms</a>\n      </div>\n      <div className=\"mt-8 md:mt-0 md:order-1\">\n        <p className=\"text-center text-base text-gray-400\">\n          &copy; 2024 Your Company, Inc. All rights reserved.\n        </p>\n      </div>\n    </div>\n  </footer>\n);"
+  },
+  {
+    "name": "Checkbox",
+    "description": "复选框组件。包含复选框输入和右侧的说明文字。",
+    "tags": ["form", "selection", "input"],
+    "code": "const Checkbox = ({ id, label, checked, onChange }) => (\n  <div className=\"flex items-start\">\n    <div className=\"flex items-center h-5\">\n      <input\n        id={id}\n        name={id}\n        type=\"checkbox\"\n        checked={checked}\n        onChange={onChange}\n        className=\"focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded\"\n      />\n    </div>\n    <div className=\"ml-3 text-sm\">\n      <label htmlFor={id} className=\"font-medium text-gray-700\">{label}</label>\n    </div>\n  </div>\n);"
+  },
+  {
+    "name": "Avatar",
+    "description": "用户头像组件。圆形图片展示，若无图片则显示灰色背景。",
+    "tags": ["display", "user", "profile"],
+    "code": "const Avatar = ({ src, alt, size = 'md' }) => {\n  const sizes = {\n    sm: 'h-8 w-8',\n    md: 'h-12 w-12',\n    lg: 'h-16 w-16',\n  };\n  return (\n    <img\n      className={`inline-block rounded-full object-cover ${sizes[size]}`}\n      src={src || 'https://via.placeholder.com/150'}\n      alt={alt}\n    />\n  );\n};"
+  }
+]
