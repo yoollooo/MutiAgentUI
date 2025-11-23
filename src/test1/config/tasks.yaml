@@ -1,45 +1,111 @@
-Expert1_task:
+# --- 第一阶段：需求分析 ---
+Expert1_Analysis_Task:
   description: >
-    Build a "To-Do Task" framework: conduct in-depth analysis of software requirements in long-text format, extract business objectives, functional scope, and key scenarios, decompose scattered requirement information into executable individual to-do tasks to form a structured to-do list; subsequently map to-do tasks to UI modules with reference to the rule table, extract the corresponding UI module for each task by aligning with the predefined "business behavior-UI component" and "verb-UI" mapping rule tables, organize UI modules according to business process logic, and ultimately generate a complete structured UI requirement document.
+    First, retrieve and carefully review the two rule tables ("Business-UI" and "Verb-UI") from the Knowledge Base to master the precise mapping relationships between business actions and frontend components. Taking this as the theoretical basis, conduct an in-depth analysis of the Product Requirements Document (PRD), sort out the overall business processes, and complete system classification (such as application-type, backend management-type, etc.) based on system functional attributes. Subsequently, strictly apply the mapping logic in the two aforementioned tables to accurately and separately extract the requirements that need to be implemented through frontend development for each step of the business processes. Finally, conduct a self-assessment on the completeness and accuracy of the extracted frontend requirements. If deviations are identified, an iterative optimization process must be initiated (with a maximum of 3 repetitions) until the requirements are clear, accurate, and error-free.
   expected_output: >
-    A complete structured UI requirement document.
-  agent: Expert1
+    Structured Frontend Requirements List
+  agent:
+    Requirements_Analyst
 
-Expert2_task:
+# --- 第二阶段：交互设计 (含 Expert1 评审) ---
+Expert2_Design_Draft_Task:
   description: >
-    Analyze the input UI modules and their organizational logic to clarify the layout relationships and interaction logic between modules; then use the built-in image generation capability to create visual interface sketches, focusing on restoring core pages, module organizational structures, and key interactive elements; store the generated sketches as files by selecting local storage in the current directory; finally organize image-related information into a structured format such as JSON, which complies with the data parsing rules of other agents.
+    Analyze the frontend requirements list from the Requirements Analyst and the Product Requirements Document (PRD), design user flow diagrams, design wireframes, and define interaction rules, with a focus on ensuring usability and operability.
   expected_output: >
-    UI Sketch Files: Create a new "Sketches" folder in the current directory to save.
-  agent: Expert2
+    First Draft of Interaction Design Deliverables (User Flow Diagrams, Wireframes)
+  agent:
+    UX_Designer
+  context:
+    [Expert1_Analysis_Task]
 
-Expert3_task:
+Expert1_Review_Expert2_Task:
   description: >
-    Analyze the input document, extract non-functional requirements related to UI aesthetics, and build a standardized design system that defines clear rules for colors, fonts, and spacing; optimize the input UI sketches using the design system by applying color rules to modules/components, unifying the font styles of all text elements, and adjusting spacing to ensure visual consistency—enhancing overall aesthetics without altering the original UI module structure and organizational logic; store the optimized aesthetic designs as files and generate access credentials.
+    Verify whether the interaction design deliverables delivered by the UX Designer Agent comply with the frontend requirements list. If any issues are identified, list specific revision suggestions.
   expected_output: >
-    Optimized Aesthetic UI Sketches.
-  agent: Expert3
+    A review report on the interaction design deliverables, including approval status and revision suggestions.
+  agent:
+    Requirements_Analyst
+  context:
+    [Expert1_Analysis_Task, Expert2_Design_Draft_Task]
 
-Expert4_task:
+Expert2_Design_Finalize_Task:
   description: >
-    Parse the organized requirement documents to extract key constraints affecting UI architecture; analyze the optimized aesthetic UI designs by mapping visual elements to technical implementation requirements and identifying potential technical difficulties. Leverage architecture design knowledge to determine the technical solution: select the development language based on framework compatibility and project requirements, evaluate and recommend front-end frameworks, and define the supporting technology stack. Design backend connection and collaboration logic: clarify API interaction protocols, data transmission formats, authentication methods, and error handling mechanisms to ensure smooth front-end and backend collaboration; finally integrate all decisions to form a UI architecture solution that can support code implementation.
+    Based on the review report from the Requirements Analyst Agent, revise and optimize the interaction design solution, and output the final version of the deliverables.
   expected_output: >
-    A complete code-implementation-oriented UI architecture solution, including technical stack definition and backend collaboration specifications.
-  agent: Expert4
+    Final Version of Interaction Design Deliverables (User Flow Diagrams, Wireframes)
+  agent:
+    UX_Designer
+  context:
+    [Expert2_Design_Draft_Task, Expert1_Review_Expert2_Task]
 
-Expert5_task:
+# --- 第三阶段：UI设计 (含 Expert2 评审) ---
+Expert3_UI_Draft_Task:
   description: >
-    Extract UI functional requirements from the UI requirement document generated by the business logic generation agent, confirm technical constraints from the UI architecture solution, and map the visual details in the optimized aesthetic UI designs to code style rules. Identify reusable UI modules: classify UI elements in the design into "general-purpose modules" and "business-specific modules", mark candidate modules for the reuse library, generate reusable module code, build a reusable UI module library, and finally verify code compliance.
+    Analyze the interaction design deliverables from the UX Agent to clarify visual design boundaries; define visual specifications (colors, fonts, icons, layouts), and generate polished UI diagrams.
   expected_output: >
-    A complete set of production-grade UI code and a reusable UI module library.
-  agent: Expert5
+    Polished UI diagram files + Structured access credentials (Draft)
+  agent:
+    UILayout_Designer
+  context:
+    [Expert2_Design_Finalize_Task]
 
-Expert6_task:
+Expert2_Review_Expert3_Task:
   description: >
-    Pre-test Preparation and Framework Identification: Analyze the generated UI code to determine the front-end framework and technical stack details; obtain the optimized aesthetic UI designs via access credentials as the benchmark for visual regression testing; clarify the test scope based on the requirement document.
-    Automated Test Code Generation: For visual regression testing, generate test scripts that capture UI screenshots and compare them with the benchmark; for component testing, write test cases using framework-specific tools; for routing testing, generate page navigation verification scripts through end-to-end tools.
-    Dependency Installation and Test Execution: Automatically generate a package.json containing test dependencies, execute commands to install dependencies, and run the full test suite.
-    Result Analysis and Reporting: Analyze visual regression results—mark as "Passed" if matched, or "Failed" with highlighted differences if discrepancies exceed the threshold; analyze component/routing test results—mark as "Passed" if functions meet expectations, or "Failed" with recorded error logs if exceptions occur.
-    Post-test Optimization Suggestions: Provide targeted fix solutions for failed test cases and submit them to the code generation agent for code regeneration.
+    As the reviewer, check if the visual design output from the UI Agent aligns with interaction flows and user experience principles.
   expected_output: >
-    A UI test result report including fix solutions.
-  agent: Expert6
+    Review report on the visual design output from the UI Agent
+  agent:
+    UX_Designer
+  context:
+    [Expert2_Design_Finalize_Task, Expert3_UI_Draft_Task]
+
+Expert3_UI_Finalize_Task:
+  description: >
+    Based on the review report from the UX Agent, adjust visual design details and output the final UI diagrams.
+  expected_output: >
+    Final polished UI diagram files + Structured access credentials
+  agent:
+    UILayout_Designer
+  context:
+    [Expert3_UI_Draft_Task, Expert2_Review_Expert3_Task]
+
+# --- 第四阶段：代码生成 (含 Expert3 评审) ---
+Expert4_Code_Draft_Task:
+  description: >
+    First, use the JSONSearchTool to retrieve and carefully review the component definitions in the "frontend_components.json" file from the Knowledge Base to master the specific code structures and property specifications of the reusable components. Taking this standardized library as the technical foundation, conduct an in-depth analysis of the UI Agent's finalized design and the Structured Frontend Requirements List to clarify the development scope. Subsequently, strictly apply the code patterns from "frontend_components.json" to generate production-grade UI code, ensuring the precise implementation of interaction effects and multi-device responsive layouts.
+  expected_output: >
+    A production-grade UI code archive (Draft)
+  agent:
+    Frontend_Developer
+  context: [Expert1_Analysis_Task, Expert2_Design_Finalize_Task, Expert3_UI_Finalize_Task]
+
+Expert3_Review_Expert4_Task:
+  description: >
+    As the reviewer, check if the UI code output from the Frontend Engineer Agent faithfully reproduces the visual design details.
+  expected_output: >
+    Visual fidelity review report on the UI code output from the Frontend Engineer Agent
+  agent:
+    UILayout_Designer
+  context:
+    [Expert3_UI_Finalize_Task, Expert4_Code_Draft_Task]
+
+Expert4_Code_Finalize_Task:
+  description: >
+   Regenerate or correct the code based on the visual fidelity review report generated by the UI Agent.
+  expected_output: >
+    A complete production-grade UI code archive (Final Version)
+  agent:
+    Frontend_Developer
+  context:
+    [Expert4_Code_Draft_Task, Expert3_Review_Expert4_Task]
+
+# --- 第五阶段：测试 ---
+Expert5_Test_Task:
+  description: >
+    Retrieve final code, UI diagrams, and PRD to define the testing scope; execute visual regression testing: compare deviations between code and UI diagrams; conduct component interaction testing and routing testing; compile test data.
+  expected_output: >
+    Complete UI test result report
+  agent:
+    UITest_Engineer
+  context:
+    [Expert1_Analysis_Task, Expert3_UI_Finalize_Task, Expert4_Code_Finalize_Task]
