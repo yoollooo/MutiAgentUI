@@ -16,6 +16,7 @@ class FileItem(BaseModel):
 class ProjectSaverSchema(BaseModel):
     project_name: str = Field(..., description="项目名称，建议使用 'frontend_project'")
     files: List[FileItem] = Field(..., description="包含所有文件的列表")
+    overwrite: bool = Field(False, description="是否覆盖整个项目目录。如果为 False，则只更新或添加指定文件，保留已有文件。")  # 新增字段
 
 
 class ProjectSaverTool(BaseTool):
@@ -26,19 +27,20 @@ class ProjectSaverTool(BaseTool):
     )
     args_schema: Type[BaseModel] = ProjectSaverSchema
 
-    def _run(self, project_name: str, files: List[Union[Dict, Any]]) -> str:
-        # 设置固定的输出目录，方便查看
-        # 如果你希望每次运行都覆盖同一个目录，使用这个：
-        base_path = os.path.join("output", project_name)
+    def _run(self, project_name: str, files: List[Union[Dict, Any]], overwrite: bool = False) -> str: # 新增参数
+        # # 设置固定的输出目录，方便查看
+        # # 如果你希望每次运行都覆盖同一个目录，使用这个：
+        # base_path = os.path.join("output", project_name)
 
         # 如果你希望每次都保留历史记录（带时间戳），请解开下面这行的注释：
-        # timestamp = time.strftime("%Y%m%d_%H%M%S")
-        # base_path = os.path.join("output", f"{project_name}_{timestamp}")
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        base_path = os.path.join("output", f"{project_name}_{timestamp}")
 
         try:
-            # 如果目录已存在，先清理（确保生成的是纯净的最新代码）
-            if os.path.exists(base_path):
+            # 修改逻辑：只有明确要求 overwrite 时才删除目录
+            if overwrite and os.path.exists(base_path):
                 shutil.rmtree(base_path)
+
             os.makedirs(base_path, exist_ok=True)
 
             saved_files_count = 0

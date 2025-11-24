@@ -73,16 +73,13 @@ Expert3_UI_Finalize_Task:
 Expert4_Code_Draft_Task:
   description: >
     First, use the FileReadTool to retrieve and carefully review the component definitions in the "frontend_components.json" file from the Knowledge Base to master the specific code structures and property specifications of the reusable components. Analyze the UI Agent's design and Requirements List.
-    IMPORTANT RULES:
-       1. Do NOT save files yet. Just generate the code content in your memory/response.
-       2. Plan a standard React project structure:
-          - `src/components/` for reusable components.
-          - `src/pages/` for main pages.
-          - `src/App.js` and `src/index.css`.
-          - `package.json` (Must include dependencies like react, tailwindcss).
-    Strictly apply the code patterns from "frontend_components.json" to generate production-grade UI code.
+    Generate project config (package.json, vite.config.js, tailwind.config.js).
+    Generate REUSABLE COMPONENTS (src/components/Button.jsx, InputField.jsx, etc.) based on 'frontend_components.json'.
+
+    IMMEDIATELY SAVE these files using the 'Project Saver Tool'.
+    CRITICAL: Set 'overwrite' to True (or allow directory cleaning) for this first batch.
   expected_output: >
-    A confirmation string listing all the files that have been successfully saved into the `./output_project/` directory. NO ZIP FILES.
+    Confirmation that config and component files are saved.
   agent:
     Frontend_Developer
   context: [Expert1_Analysis_Task, Expert2_Design_Finalize_Task, Expert3_UI_Finalize_Task]
@@ -100,16 +97,14 @@ Expert3_Review_Expert4_Task:
 
 Expert4_Code_Finalize_Task:
   description: >
-    FINAL SAVING INSTRUCTION (CRITICAL):
-      You must use the "Project Saver Tool" to save ALL files at once.
-      Tool Arguments Requirement:
-        1. `project_name`: set to "frontend_project"
-        2. `files`: A list of objects. Each object MUST use the key `file_path` (Do NOT use `path`).
-           - Correct: `{"file_path": "src/App.js", "content": "..."}`
-           - Incorrect: `{"path": "src/App.js", ...}`
-    Ensure you include `package.json`, `README.md`, and all source code.
+    Based on the components saved in the previous step (Expert4_Code_Draft_Task), implement the BUSINESS LOGIC:
+        1. Generate all PAGE files (src/pages/RegistrationPage.jsx, etc.).
+        2. Generate the entry files (src/App.jsx, src/main.jsx) to route to these pages.
+
+        SAVE these files using the 'Project Saver Tool'.
+        CRITICAL: Set 'overwrite' to False (do NOT delete existing files) to append these pages to the project.
   expected_output: >
-    A confirmation message from the tool saying "Project saved to folder...".
+    Final confirmation that the entire project (components + pages) is ready.
   agent:
     Frontend_Developer
   context:
