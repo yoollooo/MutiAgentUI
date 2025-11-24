@@ -73,22 +73,13 @@ Expert3_UI_Finalize_Task:
 Expert4_Code_Draft_Task:
   description: >
     First, use the FileReadTool to retrieve and carefully review the component definitions in the "frontend_components.json" file from the Knowledge Base to master the specific code structures and property specifications of the reusable components. Analyze the UI Agent's design and Requirements List.
-    CRITICAL EXECUTION RULES (MUST FOLLOW):
-    1. Single Root Directory:** You MUST save ALL files into the directory: `./output_project/`.
-       - Do NOT create `code_folder` or `project_v1` or random folders.
-       - Start every file path with `./output_project/`.
-    2. Standard Structure:** Use a professional React/Vue project structure:
-       - `./output_project/package.json`
-       - `./output_project/README.md`
-       - `./output_project/src/App.js` (or .jsx/.vue)
-       - `./output_project/src/index.js`
-       - `./output_project/src/components/Header.js`
-       - `./output_project/src/styles/main.css`
-    3. Tool Argument Format:
-       - When using the file saver tool, the argument list MUST use the key `path` (NOT `file_path`).
-       - Correct Example: `files=[{"path": "./output_project/src/App.js", "content": "..."}]`
-       - INCORRECT Example:** `files=[{"file_path": "...", ...}]` (This will crash).
-    4. No Zip Files:** Do not compress files. Save them strictly as raw code files.
+    IMPORTANT RULES:
+       1. Do NOT save files yet. Just generate the code content in your memory/response.
+       2. Plan a standard React project structure:
+          - `src/components/` for reusable components.
+          - `src/pages/` for main pages.
+          - `src/App.js` and `src/index.css`.
+          - `package.json` (Must include dependencies like react, tailwindcss).
     Strictly apply the code patterns from "frontend_components.json" to generate production-grade UI code.
   expected_output: >
     A confirmation string listing all the files that have been successfully saved into the `./output_project/` directory. NO ZIP FILES.
@@ -109,13 +100,16 @@ Expert3_Review_Expert4_Task:
 
 Expert4_Code_Finalize_Task:
   description: >
-    Based on the review report, modify or add files directly in the `./output_project/` directory.
-   REMINDERS:
-     - Always use the `path` argument key for the tool.
-     - Do NOT change the root folder. Keep everything in `./output_project/`.
-     - Ensure `package.json` is present and valid.
+    FINAL SAVING INSTRUCTION (CRITICAL):
+      You must use the "Project Saver Tool" to save ALL files at once.
+      Tool Arguments Requirement:
+        1. `project_name`: set to "frontend_project"
+        2. `files`: A list of objects. Each object MUST use the key `file_path` (Do NOT use `path`).
+           - Correct: `{"file_path": "src/App.js", "content": "..."}`
+           - Incorrect: `{"path": "src/App.js", ...}`
+    Ensure you include `package.json`, `README.md`, and all source code.
   expected_output: >
-    Final confirmation that all valid source code files exist in `./output_project/`.
+    A confirmation message from the tool saying "Project saved to folder...".
   agent:
     Frontend_Developer
   context:
@@ -135,17 +129,11 @@ Expert5_Test_Task:
 # 最终交付
 Final_Handover_Task:
   description: >
-    [Final Delivery and Archiving]:
-    1. Consolidate all final code validated by testing (HTML, CSS, JS, image placeholders, etc.).
-    2. Key Step: You must call the "Project Saver Tool" to save these files.
-    3. When calling the tool, please construct a clear file structure, for example:
-       - index.html
-       - css/style.css
-       - js/app.js
-       - components/Navbar.js
-    4. Ensure the tool call is successful and return the tool's execution result (i.e., the save path).
+    Verify that the "Project Saver Tool" was successfully executed in the previous step.
+        If not, call it now with the correct parameters (`file_path` key).
+        Summarize the project structure.
   expected_output: >
-    Tool call confirmation message displaying "Project saved successfully...", along with the generated ZIP file path.
+    Final project summary and location of the output.
   agent:
     Frontend_Developer # Ensure this uses Expert4's role name
   context:
